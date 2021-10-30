@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <script src='https://cdn.plot.ly/plotly-2.4.2.min.js'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+
+    p {
+      font-family: "Inter", sans-serif;
+      font-size: 14px;
+    }
+
+    h1 {
+      font-family: "Inter", sans-serif;
+      font-size: 42px;
+      margin: 0px;
+    }
+
+    h2 {
+      font-family: "Inter", sans-serif;
+      font-size: 32px;
+      margin: 2px;
+      color: #3db7e4;
+    }
+
+    h3 {
+      font-family: "Inter", sans-serif;
+      font-size: 22px;
+    }
+
+    .plot1 {
+      display: inline-block;
+    }
+
+    .box {
+      display: flex;
+      align-items: center;
+    }
+
+    .title1 {
+      text-align: left;
+    }
+
+    #plot1text {
+      text-align: left;
+    }
+
+    .block2:before {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .inner {
+      display: inline-block;
+      vertical-align: middle;
+      padding: 3px 5px;
+    }
+
+    .block3:before {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .button {
+      text-align: center;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .button {
+      height: 30px;
+      width: 100px;
+      color: white;
+      border-radius: 4px;
+      background-color: #3db7e4;
+      border: none;
+      transition: all 0.5s;
+    }
+
+    .button span {
+      cursor: pointer;
+      display: inline-block;
+      position: relative;
+      transition: 0.5s;
+    }
+
+    .button span:after {
+      content: '»';
+      position: absolute;
+      opacity: 0;
+      top: 0;
+      right: -20px;
+      transition: 0.5s;
+    }
+
+    .button:hover span {
+      padding-right: 25px;
+    }
+
+    .button:hover span:after {
+      opacity: 1;
+      right: 0;
+    }
+
+  </style>
+  <img style="float:left; padding-top: 10px; margin-left: 115px;" src="https://d21xlh2maitm24.cloudfront.net/chi/Divvy-Header-Logo.svg?mtime=20160809095032" width="175" height="40">
+  <p style="float:right; margin-right: 115px">Contact | Analyst</p>
+
+
+
+</head>
+
+<body>
+  <br><br><br><br>
+
+  <div class="block3">
+    <center>
+      <div class="inner">
+        <h2>Weekday Analysis</h2>
+        <p>Average Durations (Minutes) per Ride</p>
+        <p>Choose Rider Type:</p>
+        <button class="button" id=0><span>Casual</span></button>
+        <button class="button" id=1><span>Member</span></button>
+      </div>
+      <div class="inner"><canvas id="forecast" height="350" width="700"></canvas></div>
+      <br>
+  </div>
+  </center>
+  </div>
+  <br><br><br>
+  <div class="block3">
+    <center>
+      <div class="inner">
+        <div id="myDiv" height="350" width="850"></div>
+      </div>
+      <div class="inner">
+        <h2>Popular Locations</h2>
+        <p>Near or around Downtown Chicago</p>
+      </div>
+  </div>
+  </center>
+
+  <br><br><br><br>
+
+  <script>
+    const lat = ['41.8732','41.8755','41.8751','41.8730','41.8711',
+    '41.8745','41.8744','41.8732','41.8731','41.8731',
+    '41.8766','41.8795','41.8732','41.87331','41.8768',
+    '41.8790','41.8744','41.8799','41.8754','41.8701'
+    ];
+
+    const lon = ['-87.6318','-87.6271','-87.62378','-87.62188','-87.62890',
+    '-87.6321','-87.6267','-87.6281','-87.6221','-87.62016',
+    '-87.6418','-87.6251','-87.62478','-87.62688','-87.62490',
+    '-87.6321','-87.6467','-87.6281','-87.6221','-87.62016'
+    ];
+
+    var data = [{
+      type: "scattermapbox",
+      lat: lat,
+      lon: lon,
+      mode: "markers",
+      marker: {
+        size: 11
+      }
+    }];
+    var layout = {
+      margin: {
+        l: 0,
+        r: 0,
+        b: 0,
+        t: 0,
+        pad: 0
+      },
+      hovermode: "closest",
+      mapbox: {
+        bearing: 0,
+        center: {
+          lat: 41.8764,
+          lon: -87.6218
+        },
+        pitch: 0,
+        zoom: 14.5
+      }
+    };
+    Plotly.setPlotConfig({
+      mapboxAccessToken: "pk.eyJ1Ijoic2hha2Fzb20iLCJhIjoiY2plMWg1NGFpMXZ5NjJxbjhlM2ttN3AwbiJ9.RtGYHmreKiyBfHuElgYq_w"
+    });
+    Plotly.newPlot("myDiv", data, layout, {
+      displayModeBar: false
+    });
+
+
+    var chart_labels = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var electric_dataset = ['26.3', '25.2', '17.0', '18.2', '18.4', '18.4', '21.7'];
+    var classic_dataset = ['32.3', '32.4', '23', '13', '22.6', '24.1', '28.8'];
+    var predicted_dataset = ['37.5', '28', '19.7', '25.8', '17.4', '30.6', '29.5'];
+    var ctx = document.getElementById("forecast").getContext('2d');
+    var config = {
+      type: 'bar',
+      responive: true,
+      data: {
+        labels: chart_labels,
+        datasets: [{
+          type: 'bar',
+          backgroundColor: 'rgba(54, 162, 235, 0.8)',
+          label: "Electric Bike",
+          fill: false,
+          data: electric_dataset,
+        }, {
+          type: 'bar',
+          backgroundColor: 'rgba(153, 102, 255, 0.8)',
+          label: "Classic Bike",
+          data: classic_dataset,
+        }, {
+          type: 'bar',
+          backgroundColor: 'rgba(255, 99, 132, 0.8)',
+          label: "Predicted",
+          data: predicted_dataset,
+        }, 
+      ]
+      }
+    };
+
+    var forecast_chart = new Chart(ctx, config);
+    $("#0").click(function() {
+      var data = forecast_chart.config.data;
+      data.datasets[0].data = electric_dataset;
+      data.datasets[1].data = classic_dataset;
+      data.datasets[2].data = predicted_dataset;
+      data.labels = chart_labels;
+      forecast_chart.update();
+    });
+    $("#1").click(function() {
+      var chart_labels = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      var electric_dataset = ['16.3', '16.7', '11.8', '13', '13', '12.4', '14.9'];
+      var classic_dataset = ['16.8', '16.3', '12.1', '13', '13.1', '13.1', '14.6'];
+      var predicted_dataset = ['19.5', '18', '10.7', '9.8', '15.4', '15.6', '17.5'];
+      var data = forecast_chart.config.data;
+      data.datasets[0].data = electric_dataset;
+      data.datasets[1].data = classic_dataset;
+      data.datasets[2].data = predicted_dataset;
+      data.labels = chart_labels;
+      forecast_chart.update();
+    });
+
+  </script>
+
+</body>
+</html>
